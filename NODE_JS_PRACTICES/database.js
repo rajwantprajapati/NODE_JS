@@ -44,8 +44,23 @@ const dbConnection = async () => {
     const result = await movies.insertMany(moviesList);
 
     console.log("Inserted movies:", result.insertedCount);
-    
-    
+    // Find all movies
+    const allMovies = await movies.find({}).toArray();
+    console.log("All movies:", allMovies);
+
+    // Find movies by title
+    const singleMovie = await movies.findOne({
+      title: "The Matrix Revolutions",
+    });
+    console.log("Single movie:", singleMovie);
+
+    // Find one and update
+    const updatedMovie = await movies.findOneAndUpdate(
+      { title: "The Matrix" },
+      { $set: { year: 1996 } },
+      { returnDocument: "after" },
+    );
+    console.log("Updated movie:", updatedMovie);
   } catch (error) {
     console.error(error);
   }
