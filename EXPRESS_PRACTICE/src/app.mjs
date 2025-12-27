@@ -129,6 +129,31 @@ app.get("/user/login", (req, res) => {
   res.send("User logged in successfully!!");
 });
 
+// ======== Error Handling ===========
+app.get("/get-users", (req, res) => {
+  try {
+    throw new Error("error");
+  } catch (error) {
+    // API level error handling
+    console.log("Error: ", error);
+
+    res.status(500).send("Something went wront!!");
+  }
+});
+
+app.get("/get-customers", (req, res) => {
+  throw new Error("error");
+});
+
+/**
+ * Global error handler
+ */
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    res.status(500).send("Something went wront!");
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is listening at port ${PORT}`);
