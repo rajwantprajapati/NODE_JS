@@ -6,6 +6,7 @@
  */
 
 import express from "express";
+import { adminAuth, userAuth } from "./middlewares/auth.mjs";
 
 const app = express();
 
@@ -101,6 +102,32 @@ app.get(
     res.send("Response from last route handler");
   },
 );
+
+// ========== Middleware examples =========
+
+/**
+ * Admin routes
+ */
+app.use("/admin", adminAuth);
+app.get("/admin/get-all-data", (req, res) => {
+  res.send("All user data sent");
+});
+
+app.delete("/admin/delete-user", (req, res) => {
+  res.send("User deleted!!");
+});
+
+/**
+ * User Routes
+ */
+
+app.get("/user", userAuth, (req, res) => {
+  res.send("User data sent!!");
+});
+
+app.get("/user/login", (req, res) => {
+  res.send("User logged in successfully!!");
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
